@@ -2,7 +2,6 @@ package org.gmalliaris.m222proj2gmalliaris.util;
 
 import org.gmalliaris.m222proj2gmalliaris.model.BlockEntry;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 

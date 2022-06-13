@@ -48,7 +48,7 @@ public abstract class FileParser<T> {
         }
     }
 
-    public List<T> parseTransactionFiles() throws IOException {
+    public List<T> parseFiles() throws IOException {
 
         var tsvFiles = directory.listFiles(file -> file.getName().endsWith(".tsv"));
         createAttributesMap(tsvFiles[0].toPath());

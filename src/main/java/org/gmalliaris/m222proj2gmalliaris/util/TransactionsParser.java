@@ -4,6 +4,7 @@ import org.gmalliaris.m222proj2gmalliaris.model.TransactionEntry;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 
 public class TransactionsParser extends FileParser<TransactionEntry> {
 
@@ -26,9 +27,9 @@ public class TransactionsParser extends FileParser<TransactionEntry> {
             SIZE, WEIGHT, IS_COINBASE, HAS_WITNESS, INPUT_TOTAL, INPUT_TOTAL_USD,
             OUTPUT_TOTAL, OUTPUT_TOTAL_USD, FEE, FEE_USD, FEE_PER_KWU, FEE_PER_KWU_USD);
 
-    private final List<Long> blocksIds;
+    private final Set<Long> blocksIds;
 
-    public TransactionsParser(Path directory, List<Long> blocksIds) {
+    public TransactionsParser(Path directory, Set<Long> blocksIds) {
         super(directory.toFile(), MANDATORY_FIELDS);
         this.blocksIds = blocksIds;
     }

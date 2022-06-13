@@ -1,6 +1,7 @@
 package org.gmalliaris.m222proj2gmalliaris.util;
 
 import org.gmalliaris.m222proj2gmalliaris.model.BlockEntry;
+import org.gmalliaris.m222proj2gmalliaris.model.InputEntry;
 import org.gmalliaris.m222proj2gmalliaris.model.TransactionEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,16 +41,17 @@ public class InitService implements CommandLineRunner {
 
         List<BlockEntry> blocks;
         try {
-            blocks = new BlockParser(Paths.get(args[1], BLOCKS_INPUT_SUB_DIR)).parseTransactionFiles();
+            blocks = new BlockParser(Paths.get(args[1], BLOCKS_INPUT_SUB_DIR)).parseFiles();
             LOGGER.info("{} Blocks", blocks.size());
         } catch (IOException e) {
             LOGGER.error("Failed to read transactions");
             blocks = new LinkedList<>();
         }
+        var blockIds = blocks.stream().map(BlockEntry::getId).collect(Collectors.toSet());
 
+        List<TransactionEntry> transactions;
         try {
-            var blocksIds = blocks.stream().map(BlockEntry::getId).collect(Collectors.toList());
-            var transactions = new TransactionsParser(Paths.get(args[1], TRANSACTIONS_INPUT_SUB_DIR), blocksIds).parseTransactionFiles();
+            transactions = new TransactionsParser(Paths.get(args[1], TRANSACTIONS_INPUT_SUB_DIR), blockIds).parseFiles();
             LOGGER.info("{} Transactions", transactions.size());
 
             var usedBlocksIds = transactions.stream()
@@ -62,6 +64,29 @@ public class InitService implements CommandLineRunner {
 
         } catch (IOException e) {
             LOGGER.error("Failed to read transactions");
+            transactions = new LinkedList<>();
+        }
+        var transactionHashes = transactions.stream()
+                .map(TransactionEntry::getHash)
+                .collect(Collectors.toSet());
+
+
+        try {
+            var inputs = new InputParser(Paths.get(args[1], INPUTS_INPUT_SUB_DIR), blockIds, transactionHashes)
+                    .parseFiles();
+            LOGGER.info("{} Inputs", inputs.size());
+
+            var inputHashes = inputs.stream()
+                    .map(InputEntry::getTransactionHash)
+                    .collect(Collectors.toSet());
+
+            var usedTransactions = transactions.stream()
+                    .filter(transactionEntry -> inputHashes.contains(transactionEntry.getHash()))
+                    .collect(Collectors.toSet());
+            LOGGER.info("{} used transactions", usedTransactions.size());
+
+        } catch (IOException e) {
+            LOGGER.error("Failed to read inputs");
         }
 
 //        readDirectory(Paths.get(args[1], INPUTS_INPUT_SUB_DIR));

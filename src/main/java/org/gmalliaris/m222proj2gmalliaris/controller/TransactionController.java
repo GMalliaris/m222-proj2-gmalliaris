@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping("/transactions")
 public class TransactionController {
 
     private final InputService inputService;

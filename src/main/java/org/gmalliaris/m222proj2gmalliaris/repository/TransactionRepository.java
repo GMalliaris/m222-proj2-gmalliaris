@@ -4,6 +4,7 @@ import org.gmalliaris.m222proj2gmalliaris.entity.Transaction;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository extends Neo4jRepository<Transaction, Long> {
@@ -12,4 +13,9 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
     void createIdIndex();
 
     Optional<Transaction> findByHash(String hash);
+
+    @Query("MATCH (n:Transaction)<-[:HAS_TRANSACTION]-(b:Block) " +
+            "WHERE b.blockId = $blockId " +
+            "RETURN n")
+    List<Transaction> findTransactionsByBlockId(Long blockId);
 }

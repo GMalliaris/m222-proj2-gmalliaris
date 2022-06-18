@@ -1,13 +1,13 @@
 package org.gmalliaris.m222proj2gmalliaris.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import org.gmalliaris.m222proj2gmalliaris.validation.ValidDate;
+import org.gmalliaris.m222proj2gmalliaris.validation.ValidDateTime;
 
 public class DateTimeRange {
 
-    @ValidDate(message = "Invalid date in format yyyy-MM-dd hh:mm:ss")
+    @ValidDateTime(message = "Invalid date in format yyyy-MM-dd hh:mm:ss")
     private final String rangeStart;
-    @ValidDate(message = "Invalid date in format yyyy-MM-dd hh:mm:ss")
+    @ValidDateTime(message = "Invalid date in format yyyy-MM-dd hh:mm:ss")
     private final String rangeEnd;
 
     @JsonCreator

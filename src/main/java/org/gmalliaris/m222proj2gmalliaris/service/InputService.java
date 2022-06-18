@@ -1,6 +1,6 @@
 package org.gmalliaris.m222proj2gmalliaris.service;
 
-import org.gmalliaris.m222proj2gmalliaris.model.TransactionInputRecipientsAndTotalValues;
+import org.gmalliaris.m222proj2gmalliaris.model.TransactionRecipientsAndTotalValues;
 import org.gmalliaris.m222proj2gmalliaris.repository.InputRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class InputService {
         this.inputRepository = inputRepository;
     }
 
-    public TransactionInputRecipientsAndTotalValues getTransactionInputsAndTotalValuesByHash(String transactionHash){
+    public TransactionRecipientsAndTotalValues getTransactionInputsAndTotalValuesByHash(String transactionHash){
 
         var inputs = inputRepository.getTransactionInputs(transactionHash);
         var recipients = new LinkedList<String>();
@@ -26,6 +26,6 @@ public class InputService {
             totalValue += input.getValue();
             totalValueUsd += input.getValueUsd();
         }
-        return new TransactionInputRecipientsAndTotalValues(recipients, totalValue, totalValueUsd);
+        return new TransactionRecipientsAndTotalValues(recipients, totalValue, totalValueUsd);
     }
 }

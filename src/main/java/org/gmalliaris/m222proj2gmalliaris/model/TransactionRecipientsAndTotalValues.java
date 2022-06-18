@@ -2,16 +2,16 @@ package org.gmalliaris.m222proj2gmalliaris.model;
 
 import java.util.List;
 
-public class TransactionInputRecipientsAndTotalValues {
+public class TransactionRecipientsAndTotalValues {
 
     private List<String> recipients;
     private long totalValue;
     private double totalValueUsd;
 
-    public TransactionInputRecipientsAndTotalValues() {
+    public TransactionRecipientsAndTotalValues() {
     }
 
-    public TransactionInputRecipientsAndTotalValues(List<String> recipients, long totalValue, double totalValueUsd) {
+    public TransactionRecipientsAndTotalValues(List<String> recipients, long totalValue, double totalValueUsd) {
         this.recipients = recipients;
         this.totalValue = totalValue;
         this.totalValueUsd = totalValueUsd;

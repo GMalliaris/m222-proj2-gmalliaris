@@ -1,8 +1,11 @@
 package org.gmalliaris.m222proj2gmalliaris.util;
 
+import org.gmalliaris.m222proj2gmalliaris.entity.Transaction;
 import org.gmalliaris.m222proj2gmalliaris.model.TransactionEntry;
 
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +30,7 @@ public class TransactionsParser extends FileParser<TransactionEntry> {
             SIZE, WEIGHT, IS_COINBASE, HAS_WITNESS, INPUT_TOTAL, INPUT_TOTAL_USD,
             OUTPUT_TOTAL, OUTPUT_TOTAL_USD, FEE, FEE_USD, FEE_PER_KWU, FEE_PER_KWU_USD);
 
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private final Set<Long> blocksIds;
 
     public TransactionsParser(Path directory, Set<Long> blocksIds) {
@@ -60,5 +64,29 @@ public class TransactionsParser extends FileParser<TransactionEntry> {
         return new TransactionEntry(blockId, hash, time, size, weight, isCoinbase, hasWitness,
                 inputTotal, inputTotalUsd, outputTotal, outputTotalUsd, fee, feeUsd,
                 feePerKwu, feePerKwuUsd);
+    }
+
+    public static Transaction entryToEntity(TransactionEntry entry){
+        var transaction = new Transaction();
+        transaction.setHash(entry.getHash());
+        try {
+            transaction.setTime(formatter.parse(entry.getTime()).getTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        transaction.setSize(entry.getSize());
+        transaction.setWeight(entry.getWeight());
+        transaction.setCoinbase(entry.isCoinbase());
+        transaction.setHasWitness(entry.isHasWitness());
+        transaction.setInputTotal(entry.getInputTotal());
+        transaction.setInputTotalUsd(entry.getInputTotalUsd());
+        transaction.setOutputTotal(entry.getOutputTotal());
+        transaction.setOutputTotalUsd(entry.getOutputTotalUsd());
+        transaction.setFee(entry.getFee());
+        transaction.setFeeUsd(entry.getFeeUsd());
+        transaction.setFeePerKwu(entry.getFeePerKwu());
+        transaction.setFeePreKwuUsd(entry.getFeePerKwuUsd());
+        transaction.setBlockId(entry.getBlockId());
+        return transaction;
     }
 }

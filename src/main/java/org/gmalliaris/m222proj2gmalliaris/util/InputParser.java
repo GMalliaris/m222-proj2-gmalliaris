@@ -1,8 +1,11 @@
 package org.gmalliaris.m222proj2gmalliaris.util;
 
+import org.gmalliaris.m222proj2gmalliaris.entity.Input;
 import org.gmalliaris.m222proj2gmalliaris.model.InputEntry;
 
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +32,8 @@ public class InputParser extends FileParser<InputEntry>{
     private final Set<Long> blockIds;
     private final Set<String> transactionHashes;
 
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
     public InputParser(Path directory, Set<Long> blockIds, Set<String> transactionHashes) {
         super(directory.toFile(), MANDATORY_FIELDS);
         this.blockIds = blockIds;
@@ -40,9 +45,11 @@ public class InputParser extends FileParser<InputEntry>{
         var blockId = Long.parseLong(split[attributesMap.get(BLOCK_ID)]);
         var spendingBlockId = Long.parseLong(split[attributesMap.get(SPENDING_BLOCK_ID)]);
         var transactionHash = split[attributesMap.get(TRANSACTION_HASH)];
+        var spendingTransactionHash = split[attributesMap.get(SPENDING_TRANSACTION_HASH)];
         return blockIds.contains(blockId)
                 && blockIds.contains(spendingBlockId)
-                && transactionHashes.contains(transactionHash);
+                && transactionHashes.contains(transactionHash)
+                && transactionHashes.contains(spendingTransactionHash);
     }
 
     @Override
@@ -70,5 +77,32 @@ public class InputParser extends FileParser<InputEntry>{
         var lifespan = Long.parseLong(splitEntry[attributesMap.get(LIFESPAN)]);
         return new InputEntry(blockId, transactionHash, time, value, valueUsd, recipient, type, isSpendable,
                 spendingBlockId, spendingTransactionHash, spendingTime, spendingValueUsd, lifespan);
+    }
+
+    public static Input entryToEntity(InputEntry entry){
+        var input = new Input();
+        try {
+            input.setTime(formatter.parse(entry.getTime()).getTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        input.setValue(entry.getValue());
+        input.setValueUsd(entry.getValueUsd());
+        input.setRecipient(entry.getRecipient());
+        input.setType(entry.getType());
+        input.setSpendable(entry.getSpendable());
+        try {
+            input.setSpendingTime(formatter.parse(
+                    entry.getSpendingTime()).getTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        input.setSpendingValueUsd(entry.getSpendingValueUsd());
+        input.setLifespan(entry.getLifespan());
+        input.setBlockId(entry.getBlockId());
+        input.setTransactionHash(entry.getTransactionHash());
+        input.setSpendingBlockId(entry.getSpendingBlockId());
+        input.setSpendingTransactionHash(entry.getSpendingTransactionHash());
+        return input;
     }
 }

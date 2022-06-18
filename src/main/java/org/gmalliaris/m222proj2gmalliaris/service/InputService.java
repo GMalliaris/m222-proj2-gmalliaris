@@ -1,6 +1,6 @@
 package org.gmalliaris.m222proj2gmalliaris.service;
 
-import org.gmalliaris.m222proj2gmalliaris.projection.TransactionInputRecipientsAndTotalValues;
+import org.gmalliaris.m222proj2gmalliaris.model.TransactionInputRecipientsAndTotalValues;
 import org.gmalliaris.m222proj2gmalliaris.repository.InputRepository;
 import org.springframework.stereotype.Service;
 

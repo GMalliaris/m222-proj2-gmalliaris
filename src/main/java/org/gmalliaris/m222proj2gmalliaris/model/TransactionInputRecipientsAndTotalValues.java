@@ -1,4 +1,4 @@
-package org.gmalliaris.m222proj2gmalliaris.projection;
+package org.gmalliaris.m222proj2gmalliaris.model;
 
 import java.util.List;
 

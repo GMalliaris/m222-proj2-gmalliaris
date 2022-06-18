@@ -1,6 +1,5 @@
 package org.gmalliaris.m222proj2gmalliaris.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class LargestTransaction {

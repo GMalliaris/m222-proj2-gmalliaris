@@ -2,7 +2,9 @@ package org.gmalliaris.m222proj2gmalliaris.controller;
 
 import org.gmalliaris.m222proj2gmalliaris.entity.Block;
 import org.gmalliaris.m222proj2gmalliaris.model.BlockTransactionsAndValues;
+import org.gmalliaris.m222proj2gmalliaris.model.TopMinerResponse;
 import org.gmalliaris.m222proj2gmalliaris.repository.BlockRepository;
+import org.gmalliaris.m222proj2gmalliaris.service.BlockService;
 import org.gmalliaris.m222proj2gmalliaris.service.TransactionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +19,12 @@ public class BlockController {
 
     private final BlockRepository blockRepository;
     private final TransactionService transactionService;
+    private final BlockService blockService;
 
-    public BlockController(BlockRepository blockRepository, TransactionService transactionService) {
+    public BlockController(BlockRepository blockRepository, TransactionService transactionService, BlockService blockService) {
         this.blockRepository = blockRepository;
         this.transactionService = transactionService;
+        this.blockService = blockService;
     }
 
     @GetMapping
@@ -31,5 +35,10 @@ public class BlockController {
     @GetMapping("/{blockId}/transactions")
     public BlockTransactionsAndValues getBlockTransactionsAndValues(@PathVariable("blockId") Long blockId){
         return transactionService.getBlockTransactionsAndValues(blockId);
+    }
+
+    @GetMapping("/top-miner")
+    public TopMinerResponse getTopMiner(){
+        return blockService.getTopMiner();
     }
 }

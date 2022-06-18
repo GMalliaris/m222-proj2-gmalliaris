@@ -24,13 +24,13 @@ public class Block {
     @Property
     private String guessedMiner;
     @Relationship(type = "HAS_TRANSACTION")
-    private final Set<Transaction> transactions = new HashSet<>();
+    private Set<Transaction> transactions = new HashSet<>();
     @Relationship(type = "HAS_INPUT")
-    private final Set<Input> inputs = new HashSet<>();
+    private Set<Input> inputs = new HashSet<>();
     @Relationship(type = "HAS_SPENDING_INPUT")
-    private final Set<Input> spendingInputs = new HashSet<>();
+    private Set<Input> spendingInputs = new HashSet<>();
     @Relationship(type = "HAS_OUTPUT")
-    private final Set<Output> outputs = new HashSet<>();
+    private Set<Output> outputs = new HashSet<>();
 
 
     public Long getId() {
@@ -119,6 +119,22 @@ public class Block {
 
     public void addOutput(Output output) {
         this.outputs.add(output);
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public void setInputs(Set<Input> inputs) {
+        this.inputs = inputs;
+    }
+
+    public void setSpendingInputs(Set<Input> spendingInputs) {
+        this.spendingInputs = spendingInputs;
+    }
+
+    public void setOutputs(Set<Output> outputs) {
+        this.outputs = outputs;
     }
 
     @Override

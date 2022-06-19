@@ -1,5 +1,6 @@
 package org.gmalliaris.m222proj2gmalliaris.service;
 
+import org.gmalliaris.m222proj2gmalliaris.model.InputWithBestExchangeRate;
 import org.gmalliaris.m222proj2gmalliaris.model.SpecificDate;
 import org.gmalliaris.m222proj2gmalliaris.model.SumResponse;
 import org.gmalliaris.m222proj2gmalliaris.model.TransactionRecipientsAndTotalValues;
@@ -46,5 +47,14 @@ public class InputService {
             totalValueUsd += input.getValueUsd();
         }
         return new SumResponse(totalValueUsd);
+    }
+
+    public InputWithBestExchangeRate getInputWithBestExchangeRate(Long blockId){
+
+        var inputs = inputRepository.getBlockInputWithBestExchangeRate(blockId);
+        assert !inputs.isEmpty();
+
+        var topInput = inputs.get(0);
+        return new InputWithBestExchangeRate(topInput.getRecipient(), topInput.getValue(), topInput.getValueUsd());
     }
 }

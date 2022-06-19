@@ -18,4 +18,12 @@ public interface InputRepository extends Neo4jRepository<Input, Long> {
     List<Input> getInputsByRecipientInRange(@Param("recipient") String recipient,
                                           @Param("start") long start,
                                           @Param("end") long end);
+
+    @Query("MATCH (i:Input)<-[:HAS_INPUT]-(b:Block) " +
+            "WITH i, i.valueUsd/i.value as er, b " +
+            "WHERE b.blockId = $blockId " +
+            "RETURN i " +
+            "ORDER BY er DESC " +
+            "LIMIT 1")
+    List<Input> getBlockInputWithBestExchangeRate(@Param("blockId") Long blockId);
 }

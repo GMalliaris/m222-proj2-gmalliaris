@@ -49,7 +49,6 @@ public class OutputService {
     public OutputWithMostTransactionsResponse getOutputWithMostTransactions(SpecificDate specificDate) throws ParseException {
 
         var date = dateFormatter.parse(specificDate.getDate());
-//        var start = date.toInstant().plus(3, ChronoUnit.HOURS); // from central
 
         var start = date.toInstant();
         var end = start.plus(1, ChronoUnit.DAYS);

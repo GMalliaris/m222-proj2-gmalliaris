@@ -21,10 +21,17 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
     List<Transaction> findTransactionsByBlockId(Long blockId);
 
     @Query("MATCH (t:Transaction) " +
-            "WHERE t.time > $start AND t.time < $end " +
+            "WHERE t.time >= $start AND t.time < $end " +
             "RETURN t " +
             "ORDER BY t.size DESC " +
             "LIMIT 1")
     Transaction findLargestTransaction(@Param("start") long start,
                                        @Param("end") long end);
+
+    @Query("MATCH (o:Output)<-[:HAS_OUTPUT]-(t:Transaction) " +
+            "WHERE ID(o) = $outputId AND t.time >= $start AND t.time < $end " +
+            "return t")
+    List<Transaction> findTransactionsOfOutputInRange(@Param("outputId") Long outputId,
+                                                      @Param("start") long rangeStart,
+                                                      @Param("end") long rangeEnd);
 }

@@ -36,7 +36,7 @@ public class TransactionController {
     public TransactionRecipientsAndTotalValues getTransactionOutputsAndTotalValuesByHashInDates(
             @PathVariable("transactionHash") String transactionHash,
             @RequestBody @Valid @NotNull DateTimeRange dateTimeRange) throws ParseException {
-        return outputService.getTransactionInputsAndTotalValuesByHash(dateTimeRange, transactionHash);
+        return outputService.getTransactionOutputsAndTotalValuesByHash(dateTimeRange, transactionHash);
     }
 
     @GetMapping("/largest")

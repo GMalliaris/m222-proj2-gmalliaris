@@ -15,4 +15,13 @@ public interface OutputRepository extends Neo4jRepository<Output, Long> {
     List<Output> getTransactionInRangeInputs(@Param("hash") String transactionHash,
                                              @Param("start") long rangeStart,
                                              @Param("end") long rangeEnd);
+
+    @Query("MATCH (o:Output)<-[r:HAS_OUTPUT]-(t:Transaction) " +
+            "WITH collect(t) AS ot, o, t.time AS time " +
+            "WHERE time > $start AND time < $end " +
+            "RETURN o " +
+            "ORDER BY size(ot) DESC " +
+            "LIMIT 1")
+    List<Output> getOutputWithMostTransactionInDateTimeRange(@Param("start") long rangeStart,
+                                                             @Param("end") long rangeEnd);
 }

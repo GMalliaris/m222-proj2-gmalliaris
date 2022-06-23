@@ -56,6 +56,10 @@ public class InitService implements CommandLineRunner {
     public void run(String... args) {
         this.args = args;
         validateArgs();
+        
+        if (blockRepository.count() != 0){
+            invalidArgument("Cannot migrate data, database is not empty.");
+        }
 
         var blocks = readBlockEntries();
         var blockMap = blocks.stream()
